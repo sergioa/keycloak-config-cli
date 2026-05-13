@@ -20,6 +20,7 @@
 
 package de.adorsys.keycloak.config.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -39,7 +40,9 @@ public class WorkflowRepresentation {
 
     private List<WorkflowStepRepresentation> steps;
     private WorkflowStateRepresentation state;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String cancelInProgress;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String restartInProgress;
 
     public String getId() {
