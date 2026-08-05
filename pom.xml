@@ -59,17 +59,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <spring-framework.version>6.2.11</spring-framework.version>
+        <spring-framework.version>6.2.19</spring-framework.version>
         <angus-mail.version>2.0.4</angus-mail.version>
         <json-smart.version>2.5.2</json-smart.version>
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
         <netty.version>4.1.130.Final</netty.version>
 
         <!-- Keycloak server version for testing compatibility -->
-        <keycloak.version>26.6.2</keycloak.version>
+        <keycloak.version>26.7.1</keycloak.version>
         <!-- Keycloak client libraries version (separate release cycle per https://www.keycloak.org/2024/10/release-updates.html) -->
         <!-- Latest client library: 26.0.8, tested against Keycloak server 24, 26.0, 26.1, 26.2+ -->
-        <keycloak.client.version>26.0.8</keycloak.client.version>
+        <keycloak.client.version>26.0.12</keycloak.client.version>
 
         <checkstyle-plugin.version>3.3.1</checkstyle-plugin.version>
         <checkstyle.version>10.17.0</checkstyle.version>
@@ -78,6 +78,7 @@
         <failsafe.version>3.3.2</failsafe.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <jackson.version>2.21.4</jackson.version>
+        <jackson3.version>3.1.4</jackson3.version>
         <jacoco.version>0.8.12</jacoco.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <keepachangelog.version>2.1.1</keepachangelog.version>
@@ -128,6 +129,17 @@
                 <version>${jackson.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>tools.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson3.version}</version>
             </dependency>
 
             <dependency>
@@ -1340,7 +1352,7 @@ import org.keycloak.representations.userprofile.config.UPConfig;</token>
                 </property>
             </activation>
             <properties>
-                <keycloak.client.version>26.0.8</keycloak.client.version>
+                <keycloak.client.version>26.0.12</keycloak.client.version>
             </properties>
         </profile>
         <!-- Configure the JBoss GA Maven repository -->
