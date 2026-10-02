@@ -6,7 +6,7 @@ FROM ${BUILDER_IMAGE} AS BUILDER
 
 WORKDIR /app/
 
-ARG KEYCLOAK_VERSION=26.7.4
+ARG KEYCLOAK_VERSION=26.8.0
 ARG KEYCLOAK_CLIENT_VERSION=26.0.12
 ARG MAVEN_CLI_OPTS="-ntp -B"
 
@@ -27,6 +27,18 @@ FROM ${RUNTIME_IMAGE}
 
 ARG JAR=./target/keycloak-config-cli.jar
 ENV JAVA_OPTS="" KEYCLOAK_SSL_VERIFY=true IMPORT_FILES_LOCATIONS=file:/config/*
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        \
+        libssl3t64=3.5.5-1ubuntu3.7 \
+        \
+        openssl=3.5.5-1ubuntu3.7 \
+        \
+        openssl-provider-legacy=3.5.5-1ubuntu3.7 \
+        \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # $0 represents the first CLI arg which is not inside $@
 ENTRYPOINT exec java $JAVA_OPTS -jar /app/keycloak-config-cli.jar $0 $@

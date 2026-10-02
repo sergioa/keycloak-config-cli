@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.14</version>
+        <version>3.5.16</version>
         <relativePath />
     </parent>
 
@@ -59,14 +59,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <spring-framework.version>6.2.19</spring-framework.version>
+        <log4j2.version>2.26.1</log4j2.version>
         <angus-mail.version>2.0.4</angus-mail.version>
         <json-smart.version>2.6.0</json-smart.version>
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
         <netty.version>4.1.136.Final</netty.version>
 
         <!-- Keycloak server version for testing compatibility -->
-        <keycloak.version>26.7.4</keycloak.version>
+        <keycloak.version>26.8.0</keycloak.version>
         <!-- Keycloak client libraries version (separate release cycle per https://www.keycloak.org/2024/10/release-updates.html) -->
         <!-- Latest client library: 26.0.8, tested against Keycloak server 24, 26.0, 26.1, 26.2+ -->
         <keycloak.client.version>26.0.12</keycloak.client.version>
@@ -77,8 +77,8 @@
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <failsafe.version>3.3.2</failsafe.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
-        <jackson.version>2.22.2</jackson.version>
-        <jackson3.version>3.2.2</jackson3.version>
+        <jackson.version>2.22.3</jackson.version>
+        <jackson3.version>3.2.3</jackson3.version>
         <jacoco.version>0.8.15</jacoco.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <keepachangelog.version>2.1.1</keepachangelog.version>
@@ -140,6 +140,12 @@
                 <groupId>tools.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j2.version}</version>
             </dependency>
 
             <dependency>
