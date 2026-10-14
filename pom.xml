@@ -66,7 +66,7 @@
         <netty.version>4.1.136.Final</netty.version>
 
         <!-- Keycloak server version for testing compatibility -->
-        <keycloak.version>26.8.0</keycloak.version>
+        <keycloak.version>26.8.1</keycloak.version>
         <!-- Keycloak client libraries version (separate release cycle per https://www.keycloak.org/2024/10/release-updates.html) -->
         <!-- Latest client library: 26.0.8, tested against Keycloak server 24, 26.0, 26.1, 26.2+ -->
         <keycloak.client.version>26.0.12</keycloak.client.version>
@@ -104,7 +104,7 @@
         <wiremock-jre8.version>2.27.2</wiremock-jre8.version>
         <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
         <assertj.version>3.27.7</assertj.version>
-        <logback.version>1.5.25</logback.version>
+        <logback.version>1.5.34</logback.version>
         <nimbus-jose-jwt.version>10.9.1</nimbus-jose-jwt.version>
         <rhino.version>1.9.1</rhino.version>
 
