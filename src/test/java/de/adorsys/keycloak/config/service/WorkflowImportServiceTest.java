@@ -20,6 +20,7 @@
 
 package de.adorsys.keycloak.config.service;
 
+import de.adorsys.keycloak.config.exception.ImportProcessingException;
 import de.adorsys.keycloak.config.model.RealmImport;
 import de.adorsys.keycloak.config.model.WorkflowRepresentation;
 import de.adorsys.keycloak.config.properties.ImportConfigProperties;
@@ -32,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static java.util.Optional.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 class WorkflowImportServiceTest {
@@ -157,6 +159,54 @@ class WorkflowImportServiceTest {
 
         verify(workflowRepository, never()).delete(any(), any());
         verify(workflowRepository).create(REALM_NAME, imported);
+    }
+
+    @Test
+    void shouldRecreateWorkflowOnNullWorkflowTypeMismatch() {
+        WorkflowRepresentation existing = workflow(WORKFLOW_NAME, WORKFLOW_ID);
+        existing.setEnabled(true);
+
+        WorkflowRepresentation imported = workflow(WORKFLOW_NAME, null);
+        imported.setEnabled(false);
+
+        RealmImport realmImport = realmImport(List.of(imported));
+        when(workflowRepository.getAll(REALM_NAME)).thenReturn(List.of(existing));
+        when(workflowRepository.search(REALM_NAME, WORKFLOW_NAME)).thenReturn(of(existing));
+        doThrow(new ImportProcessingException(
+                "Cannot update workflow '%s' (id: %s) in realm '%s': HTTP 400 Bad Request{\"errorMessage\":\"Provided condition types (USERS) are not compatible with workflow type (null).\"}",
+                WORKFLOW_NAME, WORKFLOW_ID, REALM_NAME
+        )).when(workflowRepository).update(eq(REALM_NAME), any());
+
+        service.doImport(realmImport);
+
+        verify(workflowRepository).update(eq(REALM_NAME), any());
+        verify(workflowRepository).delete(REALM_NAME, WORKFLOW_ID);
+        verify(workflowRepository).create(REALM_NAME, imported);
+    }
+
+    @Test
+    void shouldRethrowUpdateErrorWhenItIsNotNullWorkflowTypeMismatch() {
+        WorkflowRepresentation existing = workflow(WORKFLOW_NAME, WORKFLOW_ID);
+        existing.setEnabled(true);
+
+        WorkflowRepresentation imported = workflow(WORKFLOW_NAME, null);
+        imported.setEnabled(false);
+
+        RealmImport realmImport = realmImport(List.of(imported));
+        when(workflowRepository.getAll(REALM_NAME)).thenReturn(List.of(existing));
+        when(workflowRepository.search(REALM_NAME, WORKFLOW_NAME)).thenReturn(of(existing));
+        doThrow(new ImportProcessingException(
+                "Cannot update workflow '%s' (id: %s) in realm '%s': HTTP 400 Bad Request{\"errorMessage\":\"Some other error.\"}",
+                WORKFLOW_NAME, WORKFLOW_ID, REALM_NAME
+        )).when(workflowRepository).update(eq(REALM_NAME), any());
+
+        assertThatThrownBy(() -> service.doImport(realmImport))
+                .isInstanceOf(ImportProcessingException.class)
+                .hasMessageContaining("Some other error");
+
+        verify(workflowRepository).update(eq(REALM_NAME), any());
+        verify(workflowRepository, never()).delete(any(), any());
+        verify(workflowRepository, never()).create(eq(REALM_NAME), eq(imported));
     }
 
     private RealmImport realmImport(List<WorkflowRepresentation> workflows) {

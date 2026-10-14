@@ -20,6 +20,7 @@
 
 package de.adorsys.keycloak.config.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.adorsys.keycloak.config.model.WorkflowRepresentation;
 import de.adorsys.keycloak.config.model.WorkflowRepresentation.WorkflowConcurrencyRepresentation;
 import de.adorsys.keycloak.config.model.WorkflowRepresentation.WorkflowScheduleRepresentation;
@@ -42,6 +43,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 class WorkflowRepositoryTest {
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final KeycloakProvider keycloakProvider = mock(KeycloakProvider.class);
     private final WorkflowsResource workflowsResource = mock(WorkflowsResource.class);
@@ -202,6 +204,48 @@ class WorkflowRepositoryTest {
         WorkflowStateRepresentation state = new WorkflowStateRepresentation();
         state.setErrors(List.of("timeout-error"));
         assertThat(state.getErrors()).containsExactly("timeout-error");
+    }
+
+    @Test
+    void workflowStepWithShouldDeserializeArrayValue() throws Exception {
+        String payload = """
+                {
+                  "name":"User data retention",
+                  "steps":[
+                    {
+                      "uses":"user-data-retention",
+                      "with":{"retention-period":["1d"]}
+                    }
+                  ]
+                }
+                """;
+
+        WorkflowRepresentation workflow = OBJECT_MAPPER.readValue(payload, WorkflowRepresentation.class);
+
+        assertThat(workflow.getSteps()).hasSize(1);
+        assertThat(workflow.getSteps().getFirst().getWith())
+                .containsEntry("retention-period", List.of("1d"));
+    }
+
+    @Test
+    void workflowStepWithShouldDeserializeScalarValue() throws Exception {
+        String payload = """
+                {
+                  "name":"User data retention",
+                  "steps":[
+                    {
+                      "uses":"user-data-retention",
+                      "with":{"retention-period":"1d"}
+                    }
+                  ]
+                }
+                """;
+
+        WorkflowRepresentation workflow = OBJECT_MAPPER.readValue(payload, WorkflowRepresentation.class);
+
+        assertThat(workflow.getSteps()).hasSize(1);
+        assertThat(workflow.getSteps().getFirst().getWith())
+                .containsEntry("retention-period", List.of("1d"));
     }
 
     private WorkflowRepresentation workflow(String name, String id) {

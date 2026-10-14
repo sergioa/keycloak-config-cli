@@ -21,9 +21,12 @@
 package de.adorsys.keycloak.config.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class WorkflowRepresentation {
 
@@ -39,7 +42,9 @@ public class WorkflowRepresentation {
 
     private List<WorkflowStepRepresentation> steps;
     private WorkflowStateRepresentation state;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String cancelInProgress;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String restartInProgress;
 
     public String getId() {
@@ -225,8 +230,32 @@ public class WorkflowRepresentation {
             return with;
         }
 
-        public void setWith(Map<String, List<String>> with) {
-            this.with = with;
+        @JsonSetter("with")
+        public void setWith(Map<String, ?> with) {
+            if (with == null) {
+                this.with = null;
+                return;
+            }
+
+            Map<String, List<String>> normalizedWith = new LinkedHashMap<>();
+            with.forEach((key, value) -> {
+                if (value == null) {
+                    return;
+                }
+
+                if (value instanceof List<?> listValues) {
+                    List<String> normalizedValues = listValues.stream()
+                            .filter(Objects::nonNull)
+                            .map(Object::toString)
+                            .toList();
+                    normalizedWith.put(key, normalizedValues);
+                    return;
+                }
+
+                normalizedWith.put(key, List.of(value.toString()));
+            });
+
+            this.with = normalizedWith;
         }
     }
 

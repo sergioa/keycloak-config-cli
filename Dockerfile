@@ -6,8 +6,8 @@ FROM ${BUILDER_IMAGE} AS BUILDER
 
 WORKDIR /app/
 
-ARG KEYCLOAK_VERSION=26.5.5
-ARG KEYCLOAK_CLIENT_VERSION=26.0.8
+ARG KEYCLOAK_VERSION=26.8.1
+ARG KEYCLOAK_CLIENT_VERSION=26.0.12
 ARG MAVEN_CLI_OPTS="-ntp -B"
 
 COPY .mvn .mvn
@@ -27,6 +27,22 @@ FROM ${RUNTIME_IMAGE}
 
 ARG JAR=./target/keycloak-config-cli.jar
 ENV JAVA_OPTS="" KEYCLOAK_SSL_VERIFY=true IMPORT_FILES_LOCATIONS=file:/config/*
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        \
+        libssl3t64=3.5.5-1ubuntu3.7 \
+        \
+        openssl=3.5.5-1ubuntu3.7 \
+        \
+        openssl-provider-legacy=3.5.5-1ubuntu3.7 \
+        \
+        libfreetype6=2.14.2+dfsg-1ubuntu0.2 \
+        \
+        libpng16-16t64=1.6.57-1ubuntu0.1 \
+        \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /usr/bin/pebble
 
 # $0 represents the first CLI arg which is not inside $@
 ENTRYPOINT exec java $JAVA_OPTS -jar /app/keycloak-config-cli.jar $0 $@

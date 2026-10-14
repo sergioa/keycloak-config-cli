@@ -105,7 +105,15 @@ public class WorkflowRepository {
 
     public void update(String realmName, WorkflowRepresentation workflow) {
         WorkflowsResource resource = keycloakProvider.getCustomApiProxy(WorkflowsResource.class);
-        resource.updateWorkflow(realmName, workflow.getId(), workflow);
+        try {
+            resource.updateWorkflow(realmName, workflow.getId(), workflow);
+        } catch (WebApplicationException error) {
+            String errorMessage = String.format(
+                    "Cannot update workflow '%s' (id: %s) in realm '%s': %s",
+                    workflow.getName(), workflow.getId(), realmName, ResponseUtil.getErrorMessage(error)
+            );
+            throw new ImportProcessingException(errorMessage, error);
+        }
     }
 
     public void delete(String realmName, String workflowId) {
