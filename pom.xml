@@ -1417,7 +1417,7 @@ import org.keycloak.representations.userprofile.config.UPConfig;</token>
                 </property>
             </activation>
             <properties>
-                <keycloak.version>26.7.4</keycloak.version>
+                <keycloak.version>26.8.1</keycloak.version>
             </properties>
         </profile>
         <profile>
