@@ -6,7 +6,7 @@ FROM ${BUILDER_IMAGE} AS BUILDER
 
 WORKDIR /app/
 
-ARG KEYCLOAK_VERSION=26.8.1
+ARG KEYCLOAK_VERSION=26.8.2
 ARG KEYCLOAK_CLIENT_VERSION=26.0.12
 ARG MAVEN_CLI_OPTS="-ntp -B"
 
@@ -40,6 +40,12 @@ RUN apt-get update \
         libfreetype6=2.14.2+dfsg-1ubuntu0.2 \
         \
         libpng16-16t64=1.6.57-1ubuntu0.1 \
+        \
+        apt=3.2.1ubuntu0.1 \
+        \
+        libapt-pkg7.0=3.2.1ubuntu0.1 \
+        \
+        libpcre2-8-0=10.46-1ubuntu0.1 \
         \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /usr/bin/pebble
