@@ -20,6 +20,7 @@
 
 package de.adorsys.keycloak.config.service;
 
+import de.adorsys.keycloak.config.exception.ImportProcessingException;
 import de.adorsys.keycloak.config.model.RealmImport;
 import de.adorsys.keycloak.config.model.WorkflowRepresentation;
 import de.adorsys.keycloak.config.properties.ImportConfigProperties;
@@ -32,6 +33,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -107,11 +109,35 @@ public class WorkflowImportService {
             logger.debug("No need to update workflow '{}' in realm '{}'", workflow.getName(), realmName);
         } else {
             logger.debug("Update workflow '{}' in realm '{}'", workflow.getName(), realmName);
-            workflowRepository.update(realmName, patched);
+            try {
+                workflowRepository.update(realmName, patched);
+            } catch (ImportProcessingException error) {
+                if (isNullWorkflowTypeConditionMismatch(error)) {
+                    logger.warn(
+                            "Workflow '{}' in realm '{}' has incompatible persisted type (null). "
+                                    + "Recreating workflow to repair state.",
+                            workflow.getName(), realmName
+                    );
+                    workflowRepository.delete(realmName, existingWorkflow.getId());
+                    workflowRepository.create(realmName, workflow);
+                    return;
+                }
+                throw error;
+            }
         }
     }
 
     private boolean hasWorkflowWithName(List<WorkflowRepresentation> workflows, String name) {
         return workflows.stream().anyMatch(w -> Objects.equals(w.getName(), name));
+    }
+
+    private boolean isNullWorkflowTypeConditionMismatch(ImportProcessingException error) {
+        String message = error.getMessage();
+        if (message == null) {
+            return false;
+        }
+        String normalized = message.toLowerCase(Locale.ROOT);
+        return normalized.contains("provided condition types")
+                && normalized.contains("workflow type (null)");
     }
 }

@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.5</version>
+        <version>3.5.16</version>
         <relativePath />
     </parent>
 
@@ -59,53 +59,54 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <spring-framework.version>6.2.11</spring-framework.version>
+        <log4j2.version>2.26.1</log4j2.version>
         <angus-mail.version>2.0.4</angus-mail.version>
-        <json-smart.version>2.5.2</json-smart.version>
+        <json-smart.version>2.6.0</json-smart.version>
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
-        <netty.version>4.1.130.Final</netty.version>
+        <netty.version>4.2.19.Final</netty.version>
 
         <!-- Keycloak server version for testing compatibility -->
-        <keycloak.version>26.6.2</keycloak.version>
+        <keycloak.version>26.8.2</keycloak.version>
         <!-- Keycloak client libraries version (separate release cycle per https://www.keycloak.org/2024/10/release-updates.html) -->
-        <!-- Latest client library: 26.0.8, tested against Keycloak server 24, 26.0, 26.1, 26.2+ -->
-        <keycloak.client.version>26.0.8</keycloak.client.version>
+        <!-- Latest client library: 26.0.12, tested against Keycloak server 24, 26.0, 26.1, 26.2+ (26.0.11 adds webAuthnPolicyResidentKey / webAuthnPolicyPasswordlessResidentKey) -->
+        <keycloak.client.version>26.0.12</keycloak.client.version>
 
-        <checkstyle-plugin.version>3.3.1</checkstyle-plugin.version>
-        <checkstyle.version>10.17.0</checkstyle.version>
-        <commons-text.version>1.12.0</commons-text.version>
-        <commons-lang3.version>3.18.0</commons-lang3.version>
+        <checkstyle-plugin.version>3.6.0</checkstyle-plugin.version>
+        <checkstyle.version>12.2.0</checkstyle.version>
+        <commons-text.version>1.15.0</commons-text.version>
+        <commons-lang3.version>3.20.0</commons-lang3.version>
         <failsafe.version>3.3.2</failsafe.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
-        <jackson.version>2.21.1</jackson.version>
-        <jacoco.version>0.8.12</jacoco.version>
+        <jackson.version>2.22.4</jackson.version>
+        <jackson3.version>3.2.3</jackson3.version>
+        <jacoco.version>0.8.15</jacoco.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <keepachangelog.version>2.1.1</keepachangelog.version>
-        <license-plugin.version>2.4.0</license-plugin.version>
+        <license-plugin.version>2.7.1</license-plugin.version>
         <logstash-logback-encoder.version>9.0</logstash-logback-encoder.version>
-        <javers.version>7.6.3</javers.version>
+        <javers.version>7.11.9</javers.version>
         <maven-failsafe-plugin.version>3.2.5</maven-failsafe-plugin.version>
-        <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
+        <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
         <maven-replacer.version>1.5.3</maven-replacer.version>
-        <maven-scm-plugin.version>2.1.0</maven-scm-plugin.version>
+        <maven-scm-plugin.version>2.2.1</maven-scm-plugin.version>
         <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
         <mockserver.version>6.0.0</mockserver.version>
-        <pmd-plugin.version>3.25.0</pmd-plugin.version>
-        <pmd.version>7.6.0</pmd.version>
+        <pmd-plugin.version>3.28.0</pmd-plugin.version>
+        <pmd.version>7.27.0</pmd.version>
         <reproducible-build-maven-plugin.version>0.17</reproducible-build-maven-plugin.version>
-        <resteasy.version>7.0.0.Alpha2</resteasy.version>
-        <snakeyaml.version>2.3</snakeyaml.version>
+        <resteasy.version>7.0.5.Final</resteasy.version>
+        <snakeyaml.version>2.7</snakeyaml.version>
         <graalvm.version>24.1.1</graalvm.version>
-        <spotbugs-plugin.version>4.8.6.5</spotbugs-plugin.version>
-        <spotbugs.version>4.8.6</spotbugs.version>
+        <spotbugs-plugin.version>4.10.5.0</spotbugs-plugin.version>
+        <spotbugs.version>4.10.5</spotbugs.version>
         <testcontainers.version>1.21.4</testcontainers.version>
-        <unboundid-ldapsdk.version>7.0.1</unboundid-ldapsdk.version>
+        <unboundid-ldapsdk.version>7.0.5</unboundid-ldapsdk.version>
         <wiremock-jre8.version>2.27.2</wiremock-jre8.version>
         <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
         <assertj.version>3.27.7</assertj.version>
-        <logback.version>1.5.25</logback.version>
-        <nimbus-jose-jwt.version>10.0.2</nimbus-jose-jwt.version>
-        <rhino.version>1.8.1</rhino.version>
+        <logback.version>1.5.34</logback.version>
+        <nimbus-jose-jwt.version>10.9.1</nimbus-jose-jwt.version>
+        <rhino.version>1.9.1</rhino.version>
 
         <sonar.projectKey>keycloak-config-cli</sonar.projectKey>
         <sonar.organization>adorsys</sonar.organization>
@@ -131,6 +132,23 @@
             </dependency>
 
             <dependency>
+                <groupId>tools.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-bom</artifactId>
                 <version>${resteasy.version}</version>
@@ -147,6 +165,11 @@
             <dependency>
                 <groupId>org.keycloak</groupId>
                 <artifactId>keycloak-authz-client</artifactId>
+                <version>${keycloak.client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-client-common-synced</artifactId>
                 <version>${keycloak.client.version}</version>
             </dependency>
 
@@ -237,7 +260,53 @@
                 <artifactId>netty-codec</artifactId>
                 <version>${netty.version}</version>
             </dependency>
-        </dependencies>
+                   <!-- Keep the complete Netty test graph on the same major/minor line. -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-common</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-buffer</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-resolver</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-handler</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-socks</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-handler-proxy</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-dns</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport-native-unix-common</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+ </dependencies>
     </dependencyManagement>
 
     <dependencies>
@@ -787,6 +856,9 @@
                             <excludes>
                                 <exclude>**/OrganizationImportService.java</exclude>
                                 <exclude>**/OrganizationRepository.java</exclude>
+                                <exclude>**/RoutedOrganizationDomainRepresentation.java</exclude>
+                                <exclude>**/OrganizationDomainsResource.java</exclude>
+                                <exclude>**/OrganizationDomainsRepresentation.java</exclude>
                             </excludes>
                             <testExcludes>
                                 <exclude>**/OrganizationImportServiceTest.java</exclude>
@@ -926,6 +998,9 @@ import org.keycloak.representations.userprofile.config.UPConfig;</token>
                             <excludes>
                                 <exclude>**/OrganizationImportService.java</exclude>
                                 <exclude>**/OrganizationRepository.java</exclude>
+                                <exclude>**/RoutedOrganizationDomainRepresentation.java</exclude>
+                                <exclude>**/OrganizationDomainsResource.java</exclude>
+                                <exclude>**/OrganizationDomainsRepresentation.java</exclude>
                             </excludes>
                             <testExcludes>
                                 <exclude>**/OrganizationImportServiceTest.java</exclude>
@@ -1058,6 +1133,9 @@ import org.keycloak.representations.userprofile.config.UPConfig;</token>
                             <excludes>
                                 <exclude>**/OrganizationImportService.java</exclude>
                                 <exclude>**/OrganizationRepository.java</exclude>
+                                <exclude>**/RoutedOrganizationDomainRepresentation.java</exclude>
+                                <exclude>**/OrganizationDomainsResource.java</exclude>
+                                <exclude>**/OrganizationDomainsRepresentation.java</exclude>
                             </excludes>
                             <testExcludes>
                                 <exclude>**/OrganizationImportServiceTest.java</exclude>
@@ -1101,23 +1179,30 @@ import org.keycloak.representations.userprofile.config.UPConfig;</token>
             </build>
         </profile>
         <profile>
-            <id>pre-keycloak26-6</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <!--
+              Compatibility profile for Keycloak servers older than 26.7.
+
+              The organization classes (OrganizationRepository / OrganizationImportService)
+              compile against the default admin client (${keycloak.client.version}) and are
+              therefore part of every build; they must NOT be excluded here. This profile only
+              skips the passkey integration test, whose assertions require a Keycloak server
+              >= 26.7.
+
+              It must be activated explicitly (see .github/workflows/ci.yaml) and is deliberately
+              NOT activeByDefault: an activeByDefault profile is silently disabled as soon as any
+              other profile is activated (e.g. -Pcoverage or the default-keycloak-* profiles), so
+              relying on it to strip a shipped feature is a footgun - it dropped organization
+              support from published images while going unnoticed in CI.
+            -->
+            <id>pre-keycloak26-7</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <configuration>
-                            <excludes>
-                                <exclude>**/OrganizationRepository.java</exclude>
-                                <exclude>**/OrganizationImportService.java</exclude>
-                            </excludes>
                             <testExcludes>
                                 <exclude>**/ImportRealmWithPasskeyPropertiesIT.java</exclude>
-                                <exclude>**/ImportOrganizationsIT.java</exclude>
                             </testExcludes>
                         </configuration>
                     </plugin>
@@ -1169,6 +1254,9 @@ import org.keycloak.representations.userprofile.config.UPConfig;</token>
                         <configuration>
                             <excludes>
                                 <exclude>**/OrganizationRepository.java</exclude>
+                                <exclude>**/RoutedOrganizationDomainRepresentation.java</exclude>
+                                <exclude>**/OrganizationDomainsResource.java</exclude>
+                                <exclude>**/OrganizationDomainsRepresentation.java</exclude>
                                 <exclude>**/OrganizationImportService.java</exclude>
                             </excludes>
                             <testExcludes>
@@ -1329,7 +1417,7 @@ import org.keycloak.representations.userprofile.config.UPConfig;</token>
                 </property>
             </activation>
             <properties>
-                <keycloak.version>26.5.5</keycloak.version>
+                <keycloak.version>26.8.2</keycloak.version>
             </properties>
         </profile>
         <profile>
@@ -1340,7 +1428,7 @@ import org.keycloak.representations.userprofile.config.UPConfig;</token>
                 </property>
             </activation>
             <properties>
-                <keycloak.client.version>26.0.8</keycloak.client.version>
+                <keycloak.client.version>26.0.12</keycloak.client.version>
             </properties>
         </profile>
         <!-- Configure the JBoss GA Maven repository -->

@@ -937,6 +937,22 @@ class ImportAuthenticationFlowsIT extends AbstractImportIT {
         assertThat(authConfig, hasSize(1));
         assertThat(authConfig.get(0).getAlias(), is("config-2"));
         assertThat(authConfig.get(0).getConfig(), hasEntry(is("defaultProvider"), is("id2")));
+
+        AuthenticationFlowRepresentation duplicateOtpSubFlow = getAuthenticationFlow(
+                realm, "my duplicate otp sub-flow");
+        List<AuthenticationExecutionExportRepresentation> otpExecutions = getExecutionFromFlow(
+                duplicateOtpSubFlow, "auth-otp-form");
+        assertThat(otpExecutions, hasSize(2));
+        List<AuthenticationExecutionExportRepresentation> configuredOtpExecutions = otpExecutions.stream()
+                .filter(otpExecution -> "otp-config".equals(otpExecution.getAuthenticatorConfig()))
+                .toList();
+        assertThat(configuredOtpExecutions, hasSize(1));
+        assertThat(configuredOtpExecutions.get(0).getRequirement(), is("REQUIRED"));
+
+        authConfig = getAuthenticatorConfig(realm, "otp-config");
+        assertThat(authConfig, hasSize(1));
+        // auth-otp-form declares no config properties, so Keycloak masks every value on read; only the key is observable
+        assertThat(authConfig.get(0).getConfig(), hasKey("otpType"));
     }
 
     @Test
